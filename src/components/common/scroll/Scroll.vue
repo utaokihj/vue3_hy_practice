@@ -25,12 +25,12 @@ export default {
       default: false
     }
   },
-  setup (props) {
+  setup (props, context) {
     const scroll = ref(null)
     const wrapper = ref(null)
 
     onMounted(() => {
-      console.log('wrapper: ', wrapper.value)
+      // console.log('wrapper: ', wrapper.value)
 
       /* create BScroll object */
       scroll.value = new BScroll(wrapper.value, {
@@ -39,12 +39,61 @@ export default {
         pullUpLoad: props.pullUpLoad,
         // 当下拉距离顶部30px，派发下拉刷新事件; 回弹留在顶部的距离
         pullDownRefresh: { threshold: 30, stop: 0 },
-        bounceTime: 1000 // 回弹时间
+        bounceTime: 1000, // 回弹时间
+        useTransition: false
+      })
+
+      /* monitor scroll position */
+      if (props.probeType === 2 || props.probeType === 3) {
+        scroll.value.on('scroll', (position) => {
+          context.emit('scroll', position)
+        })
+      }
+
+      /* monitor scroll to bottom */
+      if (props.pullUpLoad) {
+        scroll.value.on('pullingUp', () => {
+          context.emit('pullingUp')
+          console.log('monitor scroll to bottom')
+        })
+      }
+
+      /* pull down */
+      scroll.value.on('pullingDown', () => {
+        context.emit('pullingDown')
       })
     })
 
+    const methods = {
+      /* back to top */
+      scrollTo (x, y, time = 500) {
+        scroll.value && scroll.value.scrollTo(x, y, time)
+      },
+
+      /* pull up to load more */
+      finishPullUp () {
+        scroll.value && scroll.value.finishPullUp()
+      },
+
+      /* pull down to refresh */
+      finishPullDown () {
+        scroll.value && scroll.value.finishPullDown()
+      },
+
+      /* refresh */
+      refresh () {
+        scroll.value && scroll.value.refresh()
+        console.log('refresh')
+      },
+
+      getScrollY () {
+        return scroll.value ? scroll.value.y : 0
+      }
+    }
+
     return {
-      wrapper
+      wrapper,
+      ...methods
     }
   }
 }

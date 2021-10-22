@@ -1,5 +1,5 @@
 <template>
-    <Scroll class="scroll">
+    <Scroll class="scroll" ref="scrollRef" @pullingDown="pullingDown">
       <p class="text-item" v-for="(v, i) in listData" :key="v.iconName">
         <i class="iconfont item-icon" :class="v.iconName"></i>
         <span>{{ i }}</span>
@@ -16,7 +16,7 @@ export default {
   components: {
     Scroll
   },
-  setup () {
+  setup (props, context) {
     const list = ref([
       { iconName: 'icon-mianxingxueqiao', text: '雪橇' },
       { iconName: 'icon-mianxinggouhuo', text: '篝火' },
@@ -38,9 +38,23 @@ export default {
     ])
     const listData = ref([...list.value, ...list.value])
 
+    const loading = ref(false)
+    const scrollRef = ref(null)
+    const pullingDown = () => {
+      loading.value = true
+      setTimeout(() => {
+        loading.value = false
+        scrollRef.value.refresh()
+      }, 3000)
+      console.log('pulling down refresh (index)')
+      scrollRef.value.finishPullDown() // execute only one time without this code
+    }
+
     return {
       list,
-      listData
+      listData,
+      scrollRef,
+      pullingDown
     }
   }
 }
