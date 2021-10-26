@@ -1,14 +1,20 @@
 <template>
     <Scroll class="scroll" ref="scrollRef" @pullingDown="pullingDown">
-      <p class="text-item" v-for="(v, i) in listData" :key="v.iconName">
+      <p
+        class="text-item"
+        v-for="(v, i) in list"
+        :key="v.iconName"
+        @click="pathNameClick(v)"
+      >
         <i class="iconfont item-icon" :class="v.iconName"></i>
-        <span>{{ i }}</span>
+        <span>{{ v.path ? v.text : i }}</span>
       </p>
     </Scroll>
 </template>
 
 <script>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 import Scroll from '@/components/common/scroll/Scroll'
 
@@ -16,9 +22,17 @@ export default {
   components: {
     Scroll
   },
+  /**
+   * fly away { bundleRendererRenderToStream }
+   * const configFn = val => val.split(',').map((item, idx) => {
+   *  `obj${idx}` = item.toLowerCase()
+   * })
+   */
   setup (props, context) {
+    const router = useRouter()
+
     const list = ref([
-      { iconName: 'icon-mianxingxueqiao', text: '雪橇' },
+      { iconName: 'icon-mianxingxueqiao', text: 'waterfall', path: '/waterfall' },
       { iconName: 'icon-mianxinggouhuo', text: '篝火' },
       { iconName: 'icon-mianxingyoulun', text: '游轮' },
       { iconName: 'icon-mianxingshoubiao', text: '手表' },
@@ -34,9 +48,13 @@ export default {
       { iconName: 'icon-mianxingxiarilengyin', text: '夏日冷饮' },
       { iconName: 'icon-mianxingdaoyu', text: '岛屿' },
       { iconName: 'icon-mianxingchonglangban', text: '冲浪板' },
-      { iconName: 'icon-mianxingbingbao', text: '冰堡' }
+      { iconName: 'icon-mianxingbingbao', text: '冰堡' },
+      { iconName: 'icon-mianxingkuaicanregou', text: '冰堡' },
+      { iconName: 'icon-mianxingtianqiyubao', text: '冰堡' },
+      { iconName: 'icon-mianxingdiqiu', text: '冰堡' },
+      { iconName: 'icon-mianxingdiwen', text: '冰堡' },
+      { iconName: 'icon-mianxinglouying', text: '冰堡' }
     ])
-    const listData = ref([...list.value, ...list.value])
 
     const loading = ref(false)
     const scrollRef = ref(null)
@@ -50,11 +68,15 @@ export default {
       scrollRef.value.finishPullDown() // execute only one time without this code
     }
 
+    const pathNameClick = v => {
+      if (v.path) router.push(v.path)
+    }
+
     return {
       list,
-      listData,
       scrollRef,
-      pullingDown
+      pullingDown,
+      pathNameClick
     }
   }
 }

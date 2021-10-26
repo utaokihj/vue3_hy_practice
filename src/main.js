@@ -10,4 +10,7 @@ import './assets/icon/iconfont.css'
 
 const app = createApp(App)
 
-app.use(store).use(router).use(Vant).mount('#app')
+app.use(store)
+  .use(router)
+  .use(Vant)
+  .mount('#app')

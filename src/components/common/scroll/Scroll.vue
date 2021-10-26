@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" ref="wrapper">
+  <div class="wrapper" ref="wrapperRef">
     <div class="content">
       <slot></slot>
     </div>
@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUpdated } from 'vue'
 
 import BScroll from 'better-scroll'
 
@@ -23,17 +23,21 @@ export default {
     pullUpLoad: {
       type: Boolean,
       default: false
+    },
+    imgRefresh: {
+      type: Boolean,
+      default: true
     }
   },
   setup (props, context) {
     const scroll = ref(null)
-    const wrapper = ref(null)
+    const wrapperRef = ref(null)
 
     onMounted(() => {
       // console.log('wrapper: ', wrapper.value)
 
       /* create BScroll object */
-      scroll.value = new BScroll(wrapper.value, {
+      scroll.value = new BScroll(wrapperRef.value, {
         click: true,
         probeType: props.probeType,
         pullUpLoad: props.pullUpLoad,
@@ -42,6 +46,7 @@ export default {
         bounceTime: 1000, // 回弹时间
         useTransition: false
       })
+      if (props.imgRefresh === true) methods.handleImgsLoad()
 
       /* monitor scroll position */
       if (props.probeType === 2 || props.probeType === 3) {
@@ -62,6 +67,10 @@ export default {
       scroll.value.on('pullingDown', () => {
         context.emit('pullingDown')
       })
+    })
+
+    onUpdated(() => {
+      if (props.imgRefresh === true) methods.handleImgsLoad()
     })
 
     const methods = {
@@ -88,11 +97,24 @@ export default {
 
       getScrollY () {
         return scroll.value ? scroll.value.y : 0
+      },
+
+      handleImgsLoad () {
+        const img = wrapperRef.value.getElementsByTagName('img')
+        let count = 0
+        if (img.length) {
+          const timer = setInterval(() => {
+            if (count === length) {
+              scroll.value.refresh()
+              clearInterval(timer)
+            } else if (img[count].complete) count++
+          }, 20)
+        }
       }
     }
 
     return {
-      wrapper,
+      wrapperRef,
       ...methods
     }
   }

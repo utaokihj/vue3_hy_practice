@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { indexRoutes } from './modules/index'
 
 const routes = [
   {
@@ -26,7 +27,8 @@ const routes = [
     name: 'Profile',
     meta: { showTabbar: true },
     component: () => import('@/views/profile/index')
-  }
+  },
+  ...indexRoutes
 ]
 
 const router = createRouter({
