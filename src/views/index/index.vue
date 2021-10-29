@@ -1,15 +1,16 @@
 <template>
-    <Scroll class="scroll" ref="scrollRef" @pullingDown="pullingDown">
-      <p
-        class="text-item"
-        v-for="(v, i) in list"
-        :key="v.iconName"
-        @click="pathNameClick(v)"
-      >
-        <i class="iconfont item-icon" :class="v.iconName"></i>
-        <span>{{ v.path ? v.text : i }}</span>
-      </p>
-    </Scroll>
+  <Scroll class="scroll" ref="scrollRef" @pullingDown="pullingDown">
+    <p
+      class="text-item"
+      v-for="(v, i) in list"
+      :key="v.iconName"
+      @click="pathNameClick(v)"
+    >
+      <i class="iconfont item-icon" :class="v.iconName"></i>
+      <span>{{ (v.path || v.text === 'teleport')? v.text : i }}</span>
+    </p>
+  </Scroll>
+  <Dialog v-if="dialogShow" @modalClick="closeDialog" />
 </template>
 
 <script>
@@ -17,10 +18,12 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import Scroll from '@/components/common/scroll/Scroll'
+import Dialog from '@/components/content/dialog/Dialog'
 
 export default {
   components: {
-    Scroll
+    Scroll,
+    Dialog
   },
   /**
    * fly away { bundleRendererRenderToStream }
@@ -33,8 +36,8 @@ export default {
 
     const list = ref([
       { iconName: 'icon-mianxingxueqiao', text: 'waterfall', path: '/waterfall' },
-      { iconName: 'icon-mianxinggouhuo', text: '篝火' },
-      { iconName: 'icon-mianxingyoulun', text: '游轮' },
+      { iconName: 'icon-mianxinggouhuo', text: 'suckTop', path: '/suckTop' },
+      { iconName: 'icon-mianxingyoulun', text: 'teleport' },
       { iconName: 'icon-mianxingshoubiao', text: '手表' },
       { iconName: 'icon-mianxingzhinanzhen', text: '指南针' },
       { iconName: 'icon-mianxingshatanyi', text: '沙滩椅' },
@@ -68,15 +71,22 @@ export default {
       scrollRef.value.finishPullDown() // execute only one time without this code
     }
 
+    const dialogShow = ref(false)
     const pathNameClick = v => {
       if (v.path) router.push(v.path)
+      if (v.text === 'teleport') dialogShow.value = true
+    }
+    const closeDialog = val => {
+      dialogShow.value = val
     }
 
     return {
       list,
+      dialogShow,
       scrollRef,
       pullingDown,
-      pathNameClick
+      pathNameClick,
+      closeDialog
     }
   }
 }
