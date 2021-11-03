@@ -9,5 +9,10 @@ export const indexRoutes = [
     name: 'SuckTop',
     meta: { showTabbar: false, title: 'suckTop' },
     component: () => import('@/views/index/suckTop')
+  }, {
+    path: '/cssPractice',
+    name: 'CssPractice',
+    meta: { showTabbar: false, title: 'cssPractice' },
+    component: () => import('@/views/index/cssPractice')
   }
 ]

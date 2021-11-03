@@ -1,20 +1,49 @@
 <template>
   <teleport to='#dialog'>
-    <div class="dialog" @click="modalClick">
-    </div>
-    <div class="content">
-      <p>title</p>
-      <p @click="modalClick">close</p>
+    <div v-if="dialogShow">
+      <div class="dialog" @click="modalClick('modal')">
+      </div>
+      <div class="content" :class="{ 'content--isActive': dialogShow === true }">
+        <p>title</p>
+        <p @click="modalClick">close</p>
+      </div>
     </div>
   </teleport>
 </template>
 
 <script>
+import { watch, watchEffect } from 'vue'
+
 export default {
-  setup (props, context) {
-    const modalClick = () => {
-      context.emit('modalClick', false)
+  emits: ['modalClick'],
+  props: {
+    dialogShow: Boolean,
+    modalClose: {
+      type: Boolean,
+      default: false
     }
+  },
+  setup (props, { emit }) {
+    const modalClick = (type) => {
+      if (type && type === 'modal') {
+        props.modalClose === true ? emit('modalClick', false) : emit('modalClick', true)
+      } else emit('modalClick', false)
+    }
+    /**
+     *
+     */
+
+    watch(
+      () => props.dialogShow,
+      (newVal, oldVal) => {
+        console.log('watch child: ', newVal)
+      },
+      { immediate: true }
+    )
+
+    watchEffect(() => {
+      console.log('watchEffect child: ', props.dialogShow)
+    })
 
     return {
       modalClick
@@ -34,24 +63,55 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
+  z-index: 9999;
+}
+@mixin middle{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+@keyframes dialog-animate {
+  0%{
+    top: -100%;
+    opacity: 0;
+  }
+  25% {
+    top: 50%;
+    opacity: 1;
+  }
+  50% {
+    top: 38%;
+    opacity: 1;
+  }
+  75% {
+    top: 42%;
+    opacity: 1;
+  }
+  100%{
+    top: 40%;
+    opacity: 1;
+  }
 }
 .content {
   width: 50%;
   height: 300px;
-  background: var(--color-background);
+  background: var(--color-background-full);
   border-radius: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
   z-index: 9999;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  margin: auto;
+  position: fixed;
+  top: -50%;
+  left: 25%;
+  // position: absolute;
+  // top: 0;
+  // right: 0;
+  // bottom: 0;
+  // left: 0;
+  // margin: auto;
   p {
     color: var(--color-text);
     background: #fff;
@@ -60,6 +120,15 @@ export default {
     border-radius: 10px;
     display: grid;
     place-items: center;
+  }
+
+  &--isActive{
+    animation-name: dialog-animate;
+    animation-duration: 0.5s;
+    animation-timing-function: cubic-bezier(0.21, 0.85, 1, 1);
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    // animation: animate 0.5s cubic-bezier(0.21, 0.85, 1, 1) 1 forwards;
   }
 }
 </style>

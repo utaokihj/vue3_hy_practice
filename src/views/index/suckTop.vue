@@ -5,7 +5,7 @@
   <div class="box"></div>
   <div class="suckTop" ref="suckTopRef" :class="suckFixed ? 'fixed' : ''">suck top box</div>
   <div class="list" :class="suckFixed ? 'top' : ''">
-    <div class="masonry">
+    <div class="masonry" @mousewheel="mouseWheel">
       <div class="column">
         <div class="item" v-for="v in imgsData1" :key="v.intro">
           <van-image :src="v.src"></van-image>
@@ -63,6 +63,9 @@ export default {
       offsetHeight: 0,
       suckFixed: false
     })
+    /**
+     *
+     */
     onMounted(() => {
       nextTick(() => {
         suckState.offsetTop = suckTopRef.value.offsetTop
@@ -71,18 +74,18 @@ export default {
         window.addEventListener('scroll', handleScroll)
       })
     })
-    /**
-     * obviously not all Emitters should be limited to 10.this fn allows that to bt increased.
-     * immediate executive
-     */
     onUnmounted(() => window.removeEventListener('scroll', handleScroll))
     const handleScroll = () => {
       const scrollTop = window.pageYOffset ||
       document.documentElement.scrollTop ||
       document.body.scrollTop
-      console.log(`scrollTop -- ${scrollTop}`)
+      // console.log(`scrollTop -- ${scrollTop}`)
       suckState.suckFixed = scrollTop > (suckState.offsetTop - suckState.offsetHeight - 4)
       // console.log(suckState)
+    }
+
+    const mouseWheel = e => {
+      console.log('mouse wheel: ', e)
     }
 
     return {
@@ -90,7 +93,8 @@ export default {
       ...toRefs(suckState),
       i,
       suckTopRef,
-      handleScroll
+      handleScroll,
+      mouseWheel
     }
   }
 }

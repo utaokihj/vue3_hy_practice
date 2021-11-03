@@ -10,7 +10,7 @@
       <span>{{ (v.path || v.text === 'teleport')? v.text : i }}</span>
     </p>
   </Scroll>
-  <Dialog v-if="dialogShow" @modalClick="closeDialog" />
+  <Dialog :dialogShow="dialogShow" @modalClick="closeDialog" />
 </template>
 
 <script>
@@ -26,7 +26,6 @@ export default {
     Dialog
   },
   /**
-   * fly away { bundleRendererRenderToStream }
    * const configFn = val => val.split(',').map((item, idx) => {
    *  `obj${idx}` = item.toLowerCase()
    * })
@@ -38,7 +37,7 @@ export default {
       { iconName: 'icon-mianxingxueqiao', text: 'waterfall', path: '/waterfall' },
       { iconName: 'icon-mianxinggouhuo', text: 'suckTop', path: '/suckTop' },
       { iconName: 'icon-mianxingyoulun', text: 'teleport' },
-      { iconName: 'icon-mianxingshoubiao', text: '手表' },
+      { iconName: 'icon-mianxingshoubiao', text: 'cssPractice', path: '/cssPractice' },
       { iconName: 'icon-mianxingzhinanzhen', text: '指南针' },
       { iconName: 'icon-mianxingshatanyi', text: '沙滩椅' },
       { iconName: 'icon-mianxingmingxinpian', text: '明信片' },
