@@ -65,6 +65,7 @@ export default {
   .center {
     flex: 1;
     text-align: center;
+    font-size: 32px;
   }
 }
 </style>

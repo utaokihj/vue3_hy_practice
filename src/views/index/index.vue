@@ -30,7 +30,7 @@ export default {
    *  `obj${idx}` = item.toLowerCase()
    * })
    */
-  setup (props, context) {
+  setup () {
     const router = useRouter()
 
     const list = ref([
@@ -38,7 +38,7 @@ export default {
       { iconName: 'icon-mianxinggouhuo', text: 'suckTop', path: '/suckTop' },
       { iconName: 'icon-mianxingyoulun', text: 'teleport' },
       { iconName: 'icon-mianxingshoubiao', text: 'cssPractice', path: '/cssPractice' },
-      { iconName: 'icon-mianxingzhinanzhen', text: '指南针' },
+      { iconName: 'icon-mianxingzhinanzhen', text: 'mobile visualization', path: '/visualization' },
       { iconName: 'icon-mianxingshatanyi', text: '沙滩椅' },
       { iconName: 'icon-mianxingmingxinpian', text: '明信片' },
       { iconName: 'icon-mianxingreqiqiu', text: '热气球' },

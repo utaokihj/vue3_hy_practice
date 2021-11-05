@@ -34,29 +34,30 @@ export default {
     const wrapperRef = ref(null)
 
     onMounted(() => {
-      // console.log('wrapper: ', wrapper.value)
+      const { probeType, pullUpLoad, imgRefresh } = props
+      // console.log('wrapperRef: ', wrapperRef.value)
 
       /* create BScroll object */
       scroll.value = new BScroll(wrapperRef.value, {
         click: true,
-        probeType: props.probeType,
-        pullUpLoad: props.pullUpLoad,
+        probeType,
+        pullUpLoad,
         // 当下拉距离顶部30px，派发下拉刷新事件; 回弹留在顶部的距离
         pullDownRefresh: { threshold: 30, stop: 0 },
         bounceTime: 1000, // 回弹时间
         useTransition: false
       })
-      if (props.imgRefresh === true) methods.handleImgsLoad()
+      if (imgRefresh === true) methods.handleImgsLoad()
 
       /* monitor scroll position */
-      if (props.probeType === 2 || props.probeType === 3) {
+      if (probeType === 2 || probeType === 3) {
         scroll.value.on('scroll', (position) => {
           context.emit('scroll', position)
         })
       }
 
       /* monitor scroll to bottom */
-      if (props.pullUpLoad) {
+      if (pullUpLoad) {
         scroll.value.on('pullingUp', () => {
           context.emit('pullingUp')
           console.log('monitor scroll to bottom')
@@ -70,7 +71,8 @@ export default {
     })
 
     onUpdated(() => {
-      if (props.imgRefresh === true) methods.handleImgsLoad()
+      const { imgRefresh } = props
+      if (imgRefresh === true) methods.handleImgsLoad()
     })
 
     const methods = {

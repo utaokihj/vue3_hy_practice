@@ -106,12 +106,12 @@ export default {
   width: 20%;
 }
 
-@mixin middle {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
+// @mixin middle {
+//   position: absolute;
+//   left: 50%;
+//   top: 50%;
+//   transform: translate(-50%, -50%);
+// }
 @keyframes scroll{
   0%{
     transform: translate(0, 0)
@@ -121,7 +121,7 @@ export default {
   }
 }
 .loop-container{
-  @include middle;
+  // @include middle;
   width: 440px;
   height: 80px;
   background: var(--color-background);

@@ -38,8 +38,9 @@ export default {
     const activeStyle = computed(() => isActive.value ? { color: props.activeColor } : {})
 
     const itemClick = () => {
-      if (props.path === route.path) return
-      router.push(props.path)
+      const { path } = props
+      if (path === route.path) return
+      router.push(path)
     }
 
     return {

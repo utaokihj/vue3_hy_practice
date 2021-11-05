@@ -14,5 +14,10 @@ export const indexRoutes = [
     name: 'CssPractice',
     meta: { showTabbar: false, title: 'cssPractice' },
     component: () => import('@/views/index/cssPractice')
+  }, {
+    path: '/visualization',
+    name: 'Visualization',
+    meta: { showTabbar: false, title: 'mobile visualization' },
+    component: () => import('@/views/index/visualization')
   }
 ]
