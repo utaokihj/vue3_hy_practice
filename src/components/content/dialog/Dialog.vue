@@ -23,13 +23,6 @@ export default {
       default: false
     }
   },
-  /**
-   * lost in your mind. never let me go
-   * Am I losing my mind.
-   * if this night is now forever, at least we're together
-   * i know i'm not alone
-   * anywhere whenever, apart from just
-   */
   setup (props, { emit }) {
     const modalClick = (type) => {
       const { modalClose } = props
