@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { indexRoutes } from './modules/index'
+import { jsPracticeRoute } from './modules/jsPractice'
 
 const routes = [
   {
@@ -13,10 +14,10 @@ const routes = [
     meta: { showTabbar: true },
     component: () => import('@/views/index/index')
   }, {
-    path: '/partyEducation',
-    name: 'PartyEducation',
+    path: '/jsPractice',
+    name: 'JsPractice',
     meta: { showTabbar: true },
-    component: () => import('@/views/partyEducation/index')
+    component: () => import('@/views/jsPractice/index')
   }, {
     path: '/partyHome',
     name: 'PartyHome',
@@ -28,7 +29,8 @@ const routes = [
     meta: { showTabbar: true },
     component: () => import('@/views/profile/index')
   },
-  ...indexRoutes
+  ...indexRoutes,
+  ...jsPracticeRoute
 ]
 
 const router = createRouter({

@@ -28,8 +28,8 @@ export default {
         icon: require('@/assets/images/tabbar/home.png'),
         iconActive: require('@/assets/images/tabbar/homeActive.png')
       }, {
-        name: 'partyEducation',
-        path: '/partyEducation',
+        name: 'JsPractice',
+        path: '/jsPractice',
         activeColor: '#FF3B14',
         icon: require('@/assets/images/tabbar/partyEducation.png'),
         iconActive: require('@/assets/images/tabbar/partyEducationActive.png')

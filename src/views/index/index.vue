@@ -25,11 +25,6 @@ export default {
     Scroll,
     Dialog
   },
-  /**
-   * const configFn = val => val.split(',').map((item, idx) => {
-   *  `obj${idx}` = item.toLowerCase()
-   * })
-   */
   setup () {
     const router = useRouter()
 
@@ -69,6 +64,18 @@ export default {
       console.log('pulling down refresh (index)')
       scrollRef.value.finishPullDown() // execute only one time without this code
     }
+
+    const typeCheckFn = (val) => {
+      const class2type = {}
+      'Boolean Number String Function Array Date RegExp Object Error'.split(' ').map((item, idx) => {
+        class2type[`[object ${item}]`] = item.toLowerCase()
+      })
+      if (val == null) return val + ''
+      return typeof val === 'object' || typeof val === 'function'
+        ? class2type[Object.prototype.toString.call(val)] || 'object'
+        : typeof val
+    }
+    typeCheckFn('Meander')
 
     const dialogShow = ref(false)
     const pathNameClick = v => {
